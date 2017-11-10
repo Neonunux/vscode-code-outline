@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.13
+
+- Add 3 buttons to quick sort variable, function, classes (ie Netbeans feature)
+
 ## 0.0.12
 
 - Implement a much faster tree building algorithm ([issue #55](https://github.com/patrys/vscode-code-outline/issues/55))

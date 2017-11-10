@@ -6,6 +6,7 @@ let optsTopLevel: number[] = [];
 let optsExpandNodes: number[] = [];
 let optsDoSort = true;
 let optsDoSelect = true;
+let optsFilter: string[] = [];
 
 export class SymbolNode {
     symbol: SymbolInformation;
@@ -95,8 +96,8 @@ export class SymbolOutlineProvider implements TreeDataProvider<SymbolNode> {
             symbolNodes.forEach(currentNode => {
                 // Drop candidates that do not contain the current symbol range
                 potentialParents = potentialParents
-                .filter(node => node !== currentNode && node.symbol.location.range.contains(currentNode.symbol.location.range))
-                .sort(this.compareSymbols);
+                    .filter(node => node !== currentNode && node.symbol.location.range.contains(currentNode.symbol.location.range))
+                    .sort(this.compareSymbols);
                 // See if any candidates remain
                 if (!potentialParents.length) {
                     tree.addChild(currentNode);
@@ -218,15 +219,25 @@ export class SymbolOutlineProvider implements TreeDataProvider<SymbolNode> {
     refresh() {
         this._onDidChangeTreeData.fire();
     }
+    filterManager(type) {
+        if (optsFilter.indexOf(type) > -1) {
+            optsFilter = optsFilter.filter(t => t !== type);
+        } else {
+            optsFilter.push(type);
+        }
+        this.refresh();
+    }
 }
 
 function readOpts() {
-   let opts = workspace.getConfiguration("symbolOutline");
-   optsDoSort = opts.get<boolean>("doSort");
-   optsDoSelect = opts.get<boolean>("doSelect");
-   optsExpandNodes = convertEnumNames(opts.get<string[]>("expandNodes"));
-   optsSortOrder = convertEnumNames(opts.get<string[]>("sortOrder"));
-   optsTopLevel = convertEnumNames(opts.get<string[]>("topLevel"));
+    let opts = workspace.getConfiguration("symbolOutline");
+    optsDoSort = opts.get<boolean>("doSort");
+    optsDoSelect = opts.get<boolean>("doSelect");
+    optsExpandNodes = convertEnumNames(opts.get<string[]>("expandNodes"));
+    optsSortOrder = convertEnumNames(opts.get<string[]>("sortOrder"));
+    let topLevelOptions = opts.get<string[]>("topLevel");
+    topLevelOptions = topLevelOptions.filter(o => (optsFilter.indexOf(o) === -1));
+    optsTopLevel = convertEnumNames(topLevelOptions);
 }
 
 function convertEnumNames(names:string[]):number[] {

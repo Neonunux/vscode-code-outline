@@ -2,7 +2,7 @@
     "name": "vscode-code-outline",
     "displayName": "Code Outline",
     "description": "A code outline tree provider for VSCode",
-    "version": "0.0.12",
+    "version": "0.0.13",
     "publisher": "patrys",
     "homepage": "https://github.com/patrys/vscode-code-outline",
     "repository": {
@@ -33,6 +33,30 @@
                     "dark": "resources/dark/icon-refresh.svg",
                     "light": "resources/light/icon-refresh.svg"
                 }
+            },
+            {
+                "command": "symbolOutline.filterVariable",
+                "title": "Filter variable",
+                "icon": {
+                    "dark": "resources/dark/icon-variable.svg",
+                    "light": "resources/light/icon-variable.svg"
+                }
+            },
+            {
+                "command": "symbolOutline.filterFunction",
+                "title": "Filter function",
+                "icon": {
+                    "dark": "resources/dark/icon-function.svg",
+                    "light": "resources/light/icon-function.svg"
+                }
+            },
+            {
+                "command": "symbolOutline.filterClass",
+                "title": "Filter class",
+                "icon": {
+                    "dark": "resources/dark/icon-class.svg",
+                    "light": "resources/light/icon-class.svg"
+                }
             }
         ],
         "views": {
@@ -47,6 +71,21 @@
             "view/title": [
                 {
                     "command": "symbolOutline.refresh",
+                    "when": "view == symbolOutline",
+                    "group": "navigation"
+                },
+                {
+                    "command": "symbolOutline.filterFunction",
+                    "when": "view == symbolOutline",
+                    "group": "navigation"
+                },
+                {
+                    "command": "symbolOutline.filterVariable",
+                    "when": "view == symbolOutline",
+                    "group": "navigation"
+                },
+                {
+                    "command": "symbolOutline.filterClass",
                     "when": "view == symbolOutline",
                     "group": "navigation"
                 }
